@@ -1,19 +1,32 @@
 package service
 
-import "user-auth-service/internal/repository"
+import (
+	"user-auth-service/internal/models"
+	"user-auth-service/internal/repository"
+)
 
-type Authorization interface{}
+type Authorization interface {
+	Login(input models.InputRequest) (int, error)
+	SignUp(input models.SignUpRequest) (int, error)
+	GenerateToken(userID int) (string, error)
+	RefreshToken(token string) (string, error)
+	ParseToken(token string) (int, error)
+}
 
-type Users interface{}
-
-type Admins interface{}
+type Users interface {
+	CreateUser(input *models.User) (int, error)
+	GetUserByID(id int) (*models.User, error)
+	UpdateUser(id int, input models.User) (int, error)
+	DeleteUser(id int) error
+	RefreshPassword(id int, input models.InputRequest) (int, error)
+	GetUserList(limit, offset int) (*[]models.User, error)
+}
 
 type StoreManager interface{}
 
 type Service struct {
 	Authorization
 	Users
-	Admins
 	StoreManager
 }
 

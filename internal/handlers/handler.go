@@ -24,5 +24,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	auth := router.Group("/auth")
+	{
+		auth.POST("/sign-up", h.SignUp)
+		auth.POST("/login", h.Login)
+	}
+
 	return router
 }
