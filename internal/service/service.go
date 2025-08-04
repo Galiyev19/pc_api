@@ -6,7 +6,7 @@ import (
 )
 
 type Authorization interface {
-	Login(input models.InputRequest) (int, error)
+	Login(input models.InputRequest) (string, error)
 	SignUp(input models.SignUpRequest) (int, error)
 	GenerateToken(input models.SignUpRequest) (string, error)
 	RefreshToken(token string) (string, error)

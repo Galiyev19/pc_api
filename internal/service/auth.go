@@ -13,9 +13,24 @@ func NewAuthService(repo repository.Repository) *Auth {
 	return &Auth{repo: repo}
 }
 
-func (s *Auth) Login(input models.InputRequest) (int, error) {
+func (s *Auth) Login(input models.InputRequest) (string, error) {
 	// Implementation for login
-	return 0, nil
+	user,err := s.repo.Login(input.Email)
+	if err != nil {
+		return 0, err
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.HashPassword), []byte(input.Password)); err != nil {
+		return 0,err
+	
+	}
+
+	token, err := GenerateToken(input)
+	if err != nil {
+		return 0, err
+	}
+
+	return token,nil
 }
 
 func (s *Auth) SignUp(input models.SignUpRequest) (int, error) {
@@ -23,7 +38,7 @@ func (s *Auth) SignUp(input models.SignUpRequest) (int, error) {
 	return 0, nil
 }
 
-func (s *Auth) GenerateToken(userID int) (string, error) {
+func (s *Auth)GenerateToken(input models.SignUpRequest) (string, error) {
 	// Implementation for generating token
 	return "", nil
 }
@@ -37,3 +52,5 @@ func (s *Auth) ParseToken(token string) (int, error) {
 	// Implementation for parsing token
 	return 0, nil
 }
+
+

@@ -10,3 +10,21 @@ func NewAuthRepo(db *sql.DB) *AuthRepo{
 		db:db,
 	}
 }
+
+func (r *AuthRepo) Login(email string) (*models.User, error) {	
+	var user models.User
+	
+	query := `SELECT FROM Users where id = $1`
+	row := r.db.QueryRow(query,email)
+	err := row.Scan(&user.ID,&user.Email,&user.HashPassword,&user.Role,&user.CreatedAt,&user.UpdatedAt,&user.IsActive)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return user, nill
+}
+
+

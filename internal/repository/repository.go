@@ -3,7 +3,7 @@ package repository
 import "user-auth-service/internal/models"
 
 type Authorization interface {
-	Login(input models.InputRequest) (int, error)
+	Login(email string) (*models.User, error)
 	SignUp(input models.SignUpRequest) (int, error)
 }
 
