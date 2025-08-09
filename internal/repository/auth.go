@@ -1,22 +1,27 @@
-package repo
+package repository
 
+import (
+	"database/sql"
+	"errors"
+	"user-auth-service/internal/models"
+)
 
-func AuthRepo struct {
+type AuthRepo struct {
 	db *sql.DB
 }
 
-func NewAuthRepo(db *sql.DB) *AuthRepo{
+func NewAuthRepo(db *sql.DB) *AuthRepo {
 	return &AuthRepo{
-		db:db,
+		db: db,
 	}
 }
 
-func (r *AuthRepo) Login(email string) (*models.User, error) {	
+func (r *AuthRepo) Login(email string) (*models.User, error) {
 	var user models.User
-	
-	query := `SELECT FROM Users where id = $1`
-	row := r.db.QueryRow(query,email)
-	err := row.Scan(&user.ID,&user.Email,&user.HashPassword,&user.Role,&user.CreatedAt,&user.UpdatedAt,&user.IsActive)
+
+	query := `SELECT FROM users WHERE email = $1`
+	row := r.db.QueryRow(query, email)
+	err := row.Scan(&user.ID, &user.Email, &user.HashPassword, &user.Role, &user.CreatedAt, &user.UpdatedAt, &user.IsActive)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil
@@ -24,7 +29,5 @@ func (r *AuthRepo) Login(email string) (*models.User, error) {
 		return nil, err
 	}
 
-	return user, nill
+	return &user, nil
 }
-
-

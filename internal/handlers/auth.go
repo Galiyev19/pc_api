@@ -8,7 +8,7 @@ import (
 )
 
 func (h *Handler) SignUp(c *gin.Context) {
-	var input models.SignUpRequest
+	var input models.InputRequest
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(400, gin.H{"error": "Invalid input"})
 		return
@@ -57,7 +57,7 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	user := models.SignUpRequest(input)
+	user := models.InputRequest(input)
 	// Generate token after successful login
 	token, err := h.service.Authorization.GenerateToken(user)
 	if err != nil {

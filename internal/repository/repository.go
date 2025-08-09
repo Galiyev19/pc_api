@@ -4,7 +4,7 @@ import "user-auth-service/internal/models"
 
 type Authorization interface {
 	Login(email string) (*models.User, error)
-	SignUp(input models.SignUpRequest) (int, error)
+	SignUp(input models.InputRequest) (int, error)
 }
 
 type Users interface {

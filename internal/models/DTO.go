@@ -5,7 +5,10 @@ type InputRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
-type SignUpRequest struct {
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required"`
+type TokenResponse struct {
+	Token            string `json:"token"`
+	RefreshToken     string `json:"refresh_token"`
+	ExpiresAt        int64  `json:"expires_at"`
+	RefreshExpiresAt int64  `json:"refresh_expires_at"`
+	Role             string `json:"role"`
 }
