@@ -1,5 +1,7 @@
 package models
 
+import "github.com/golang-jwt/jwt/v4"
+
 type InputRequest struct {
 	Email    string `json:"username"	binding:"required"`
 	Password string `json:"password" binding:"required"`
@@ -14,12 +16,7 @@ type TokenResponse struct {
 }
 
 type TokenClaims struct {
-	UserID         int    `json:"user_id"`
-	Role           string `json:"role"`
-	StandardClaims `json:"standard_claims"`
-}
-
-type StandardClaims struct {
-	ExpiresAt int64 `json:"expires_at"`
-	IssuedAt  int64 `json:"issued_at"`
+	UserID int    `json:"user_id"`
+	Role   string `json:"role"`
+	jwt.RegisteredClaims
 }

@@ -5,6 +5,7 @@ import (
 	"user-auth-service/internal/models"
 	"user-auth-service/internal/repository"
 
+	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -59,8 +60,14 @@ func (s *Auth) SignUp(input models.InputRequest) (int, error) {
 }
 
 func (s *Auth) GenerateToken(input models.InputRequest) (models.TokenClaims, error) {
+	claims := models.TokenClaims{
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+		},
+	}
 	// Implementation for generating token
-	return models.TokenClaims{}, nil
+	return claims, nil
 }
 
 func (s *Auth) RefreshToken(token string) (string, error) {
