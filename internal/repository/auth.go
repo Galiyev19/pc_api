@@ -31,3 +31,14 @@ func (r *AuthRepo) Login(email string) (*models.User, error) {
 
 	return &user, nil
 }
+
+func (r *AuthRepo) SignUp(input models.User) (int, error) {
+	query := `INSERT INTO users (email, hash_password, role, created_at, updated_at, is_active) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
+	var id int
+	err := r.db.QueryRow(query, input.Email, input.HashPassword, input.Role, input.CreatedAt, input.UpdatedAt, input.IsActive, "user").Scan(&id)
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
+}
