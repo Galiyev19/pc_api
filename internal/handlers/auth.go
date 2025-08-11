@@ -21,17 +21,11 @@ func (h *Handler) SignUp(c *gin.Context) {
 	}
 
 	// Call the service to sign up the user
-	if _, err := h.service.Authorization.SignUp(input); err != nil {
+	if token, err := h.service.Authorization.SignUp(input); err != nil {
 		c.JSON(500, gin.H{"error": "Failed to sign up"})
 		return
 	}
 
-	// Generate token after successful sign up
-	token, err := h.service.Authorization.GenerateToken(input)
-	if err != nil {
-		c.JSON(500, gin.H{"error": "Failed to generate token"})
-		return
-	}
 
 	// Return the token in the response
 	c.JSON(http.StatusOK, map[string]interface{}{
@@ -58,10 +52,11 @@ func (h *Handler) Login(c *gin.Context) {
 	}
 
 	user := models.InputRequest(input)
-	// Generate token after successful login
-	token, err := h.service.Authorization.GenerateToken(user)
+
+	//login and generate token
+	token, err := h.service.Login(user)
 	if err != nil {
-		c.JSON(500, gin.H{"error": "Failed to generate token"})
+		c.JSON(500, gin.H{"error": "Failed to login"})
 		return
 	}
 

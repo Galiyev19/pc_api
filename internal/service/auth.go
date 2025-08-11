@@ -17,6 +17,11 @@ func NewAuthService(repo repository.Repository) *Auth {
 	return &Auth{repo: repo}
 }
 
+
+const (
+	signKey = "fhglkj2384kjklasdfHaSS"
+)
+
 func (s *Auth) Login(input models.InputRequest) (models.TokenClaims, error) {
 	// Implementation for login
 	user, err := s.repo.Login(input.Email)
@@ -26,7 +31,6 @@ func (s *Auth) Login(input models.InputRequest) (models.TokenClaims, error) {
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.HashPassword), []byte(input.Password)); err != nil {
 		return models.TokenClaims{}, err
-
 	}
 
 	token, err := s.GenerateToken(input)
